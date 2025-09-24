@@ -39,10 +39,10 @@ export default function Auth() {
         {/* Header */}
         <div className="text-center">
           <div className="mx-auto h-16 w-16 bg-gradient-to-r from-cyan-500 to-blue-500 rounded-2xl flex items-center justify-center mb-4">
-            <span className="text-2xl font-bold text-white">S</span>
+            <span className="text-2xl font-bold text-white"></span>
           </div>
           <h2 className="text-3xl font-bold bg-gradient-to-r from-cyan-400 to-blue-400 bg-clip-text text-transparent">
-            SocialSphere
+            Social Sphere
           </h2>
           <p className="mt-2 text-gray-300">
             {isLogin ? 'Connectez-vous à votre compte' : 'Rejoignez notre communauté'}
