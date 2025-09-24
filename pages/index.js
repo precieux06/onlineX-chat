@@ -13,16 +13,10 @@ export default function Auth() {
 
     try {
       if (isLogin) {
-        const { error } = await supabase.auth.signInWithPassword({
-          email,
-          password,
-        })
+        const { error } = await supabase.auth.signInWithPassword({ email, password })
         if (error) throw error
       } else {
-        const { error } = await supabase.auth.signUp({
-          email,
-          password,
-        })
+        const { error } = await supabase.auth.signUp({ email, password })
         if (error) throw error
         alert('Check your email for verification link!')
       }
@@ -33,78 +27,116 @@ export default function Auth() {
     }
   }
 
+  // Styles inline pour éviter Tailwind
+  const styles = {
+    container: {
+      minHeight: '100vh',
+      background: 'linear-gradient(135deg, #0f172a 0%, #1e1b4b 50%, #0f172a 100%)',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      padding: '20px',
+      fontFamily: 'Arial, sans-serif'
+    },
+    card: {
+      maxWidth: '400px',
+      width: '100%',
+      background: 'rgba(255, 255, 255, 0.1)',
+      backdropFilter: 'blur(10px)',
+      border: '1px solid rgba(255, 255, 255, 0.2)',
+      borderRadius: '20px',
+      padding: '40px',
+      color: 'white'
+    },
+    title: {
+      textAlign: 'center',
+      fontSize: '32px',
+      fontWeight: 'bold',
+      background: 'linear-gradient(45deg, #22d3ee, #3b82f6)',
+      backgroundClip: 'text',
+      WebkitBackgroundClip: 'text',
+      color: 'transparent',
+      marginBottom: '10px'
+    },
+    input: {
+      width: '100%',
+      padding: '15px',
+      margin: '10px 0',
+      background: 'rgba(255, 255, 255, 0.1)',
+      border: '1px solid rgba(255, 255, 255, 0.3)',
+      borderRadius: '10px',
+      color: 'white',
+      fontSize: '16px'
+    },
+    button: {
+      width: '100%',
+      padding: '15px',
+      background: 'linear-gradient(45deg, #06b6d4, #3b82f6)',
+      border: 'none',
+      borderRadius: '10px',
+      color: 'white',
+      fontSize: '16px',
+      fontWeight: 'bold',
+      cursor: 'pointer',
+      marginTop: '20px'
+    }
+  }
+
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 flex items-center justify-center p-4">
-      <div className="max-w-md w-full space-y-8">
-        {/* Header */}
-        <div className="text-center">
-          <div className="mx-auto h-16 w-16 bg-gradient-to-r from-cyan-500 to-blue-500 rounded-2xl flex items-center justify-center mb-4">
-            <span className="text-2xl font-bold text-white"></span>
-          </div>
-          <h2 className="text-3xl font-bold bg-gradient-to-r from-cyan-400 to-blue-400 bg-clip-text text-transparent">
-            Social Sphere
-          </h2>
-          <p className="mt-2 text-gray-300">
-            {isLogin ? 'Connectez-vous à votre compte' : 'Rejoignez notre communauté'}
-          </p>
-        </div>
+    <div style={styles.container}>
+      <div style={styles.card}>
+        <h1 style={styles.title}>SocialSphere</h1>
+        <p style={{textAlign: 'center', color: '#d1d5db', marginBottom: '30px'}}>
+          {isLogin ? 'Connectez-vous à votre compte' : 'Rejoignez notre communauté'}
+        </p>
 
-        {/* Formulaire */}
-        <form onSubmit={handleAuth} className="mt-8 space-y-6 bg-white/10 backdrop-blur-lg rounded-2xl p-8 border border-white/20">
-          <div>
-            <label htmlFor="email" className="block text-sm font-medium text-gray-300">
-              Email
-            </label>
-            <input
-              id="email"
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              className="mt-1 block w-full px-4 py-3 bg-white/5 border border-gray-600 rounded-xl text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-transparent transition-all"
-              placeholder="votre@email.com"
-              required
-            />
-          </div>
+        <form onSubmit={handleAuth}>
+          <input
+            type="email"
+            placeholder="votre@email.com"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            style={styles.input}
+            required
+          />
+          
+          <input
+            type="password"
+            placeholder="Votre mot de passe"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            style={styles.input}
+            required
+          />
 
-          <div>
-            <label htmlFor="password" className="block text-sm font-medium text-gray-300">
-              Mot de passe
-            </label>
-            <input
-              id="password"
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              className="mt-1 block w-full px-4 py-3 bg-white/5 border border-gray-600 rounded-xl text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-transparent transition-all"
-              placeholder="Votre mot de passe"
-              required
-            />
-          </div>
-
-          <button
-            type="submit"
+          <button 
+            type="submit" 
             disabled={loading}
-            className="w-full flex justify-center py-3 px-4 border border-transparent rounded-xl shadow-sm text-sm font-medium text-white bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-700 hover:to-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-cyan-500 disabled:opacity-50 transition-all duration-200"
+            style={{...styles.button, opacity: loading ? 0.6 : 1}}
           >
             {loading ? 'Chargement...' : (isLogin ? 'Se connecter' : "S'inscrire")}
           </button>
-
-          <div className="text-center">
-            <button
-              type="button"
-              onClick={() => setIsLogin(!isLogin)}
-              className="text-cyan-400 hover:text-cyan-300 text-sm font-medium transition-colors"
-            >
-              {isLogin ? "Pas de compte ? S'inscrire" : 'Déjà un compte ? Se connecter'}
-            </button>
-          </div>
         </form>
 
-        {/* Footer */}
-        <p className="text-center text-gray-400 text-xs">
+        <button 
+          onClick={() => setIsLogin(!isLogin)}
+          style={{
+            background: 'none',
+            border: 'none',
+            color: '#60a5fa',
+            cursor: 'pointer',
+            marginTop: '15px',
+            width: '100%',
+            textAlign: 'center'
+          }}
+        >
+          {isLogin ? "Pas de compte ? S'inscrire" : 'Déjà un compte ? Se connecter'}
+        </button>
+
+        <p style={{textAlign: 'center', color: '#9ca3af', fontSize: '12px', marginTop: '30px'}}>
           Rejoignez la révolution sociale
         </p>
       </div>
     </div>
   )
-    }
+}
